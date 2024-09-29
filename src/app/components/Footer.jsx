@@ -23,7 +23,7 @@ const Footer = ({ scrollToSection, aboutRef, featuresRef, howItWorksRef, pricing
     {
       title: "Legal",
       items: [
-        { name: "Privacy Policy", ref: null },
+        { name: "Privacy Policy", url: "https://www.termsfeed.com/live/d78d06a1-2a49-403c-a597-f43e01047ad9" },
         { name: "Terms of Service", ref: null }
       ],
     },
@@ -47,18 +47,29 @@ const Footer = ({ scrollToSection, aboutRef, featuresRef, howItWorksRef, pricing
               <ul className="space-y-2">
                 {section.items.map((item, j) => (
                   <li key={j}>
-                    <a
-                      href="#"
-                      className="text-gray-300 hover:text-white transition-colors"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        if (item.ref) {
-                          scrollToSection(item.ref);
-                        }
-                      }}
-                    >
-                      {item.name}
-                    </a>
+                    {item.url ? (
+                      <a
+                        href={item.url}
+                        className="text-gray-300 hover:text-white transition-colors"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {item.name}
+                      </a>
+                    ) : (
+                      <a
+                        href="#"
+                        className="text-gray-300 hover:text-white transition-colors"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          if (item.ref) {
+                            scrollToSection(item.ref);
+                          }
+                        }}
+                      >
+                        {item.name}
+                      </a>
+                    )}
                   </li>
                 ))}
               </ul>
