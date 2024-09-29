@@ -1,7 +1,7 @@
-import React from 'react';
-import { motion } from 'framer-motion';
+import React, { useEffect, useRef, useState } from 'react';
+import { motion, useAnimation } from 'framer-motion';
 import { Card, CardContent } from '@/components/ui/card';
-import { useInView } from 'react-intersection-observer';
+import { Quote } from 'lucide-react';
 
 const testimonials = [
   {
@@ -16,61 +16,108 @@ const testimonials = [
     quote: "It's amazing how personal my character feels. It's like chatting with an old friend.",
     author: "Sujit S.",
   },
+  {
+    quote: "The AI-generated responses are incredibly creative and engaging. It's a fantastic writing tool!",
+    author: "Priya M.",
+  },
+  {
+    quote: "I've learned so much about different topics through my conversations on Matereal.",
+    author: "Rahul K.",
+  },
+  {
+    quote: "The character customization options are impressive. I created a virtual mentor for myself!",
+    author: "Anita R.",
+  },
+  {
+    quote: "Matereal has become my go-to platform for brainstorming ideas. It's like having a creative partner.",
+    author: "Vikram S.",
+  },
+  {
+    quote: "The emotional depth of the AI characters is remarkable. It's a truly immersive experience.",
+    author: "Neha P.",
+  },
 ];
 
 const Testimonials = () => {
-  const [ref, inView] = useInView({
-    triggerOnce: true,
-    threshold: 0.1,
-  });
+  const controls = useAnimation();
+  const containerRef = useRef(null);
+  const [isHovered, setIsHovered] = useState(false);
+
+  const handleMouseEnter = () => {
+    setIsHovered(true);
+    controls.stop(); // Stop movement when hovered
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+    controls.start({
+      x: ['100%', '-100%'],
+      transition: {
+        repeat: Infinity,
+        duration: 40,
+        ease: 'linear',
+      },
+    });
+  };
+
+  useEffect(() => {
+    controls.start({
+      x: ['100%', '-100%'],
+      transition: {
+        repeat: Infinity,
+        duration: 40, // Slow down speed
+        ease: 'linear',
+      },
+    });
+  }, [controls]);
 
   return (
     <motion.section
-      ref={ref}
-      className="py-20 mt-20 min-h-screen flex flex-col justify-center items-center"
-      initial={{ opacity: 0, y: 50 }}
-      animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.8 }}
+      ref={containerRef}
+      className="py-12 sm:py-16 md:py-20 overflow-hidden relative"
     >
       <motion.h2
-        className="text-6xl md:text-8xl font-extrabold mb-12 text-center bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-600"
+        className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold mb-8 sm:mb-12 text-center bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-600 px-4"
         initial={{ scale: 0.5, opacity: 0 }}
-        animate={inView ? { scale: 1, opacity: 1 } : {}}
+        animate={{ scale: 1, opacity: 1 }}
         transition={{ delay: 0.2, duration: 0.5 }}
       >
         What Users Are Saying
       </motion.h2>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-7xl">
-        {testimonials.map((testimonial, i) => (
-          <motion.div
-            key={i}
-            initial={{ opacity: 0, y: 50 }}
-            animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={{ delay: 0.2 + i * 0.1, duration: 0.5 }}
-          >
-            <Card className="bg-gradient-to-br from-gray-900 to-gray-800 border-gray-700 rounded-lg overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300">
-              <CardContent className="p-6">
-                <motion.p
-                  className="text-gray-300 mb-4 text-lg"
-                  initial={{ opacity: 0 }}
-                  animate={inView ? { opacity: 1 } : {}}
-                  transition={{ delay: 0.4 + i * 0.1, duration: 0.5 }}
-                >
-                  &ldquo;{testimonial.quote}&rdquo;
-                </motion.p>
-                <motion.p
-                  className="text-right font-bold text-lg bg-gradient-to-r from-indigo-500 via-violet-600 to-pink-400 bg-clip-text text-transparent"
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={inView ? { opacity: 1, x: 0 } : {}}
-                  transition={{ delay: 0.6 + i * 0.1, duration: 0.5 }}
-                >
-                  - {testimonial.author}
-                </motion.p>
-              </CardContent>
-            </Card>
-          </motion.div>
-        ))}
-      </div>
+      <motion.div
+        className="flex overflow-hidden"
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+      >
+        <motion.div
+          className="flex space-x-6"
+          animate={controls}
+        >
+          {/* Render testimonials twice to create continuous effect */}
+          {testimonials.concat(testimonials).map((testimonial, i) => (
+            <motion.div
+              key={i}
+              className="w-80 sm:w-96 flex-shrink-0 cursor-pointer"
+              whileHover={{ scale: 1.1 }} // Scale effect on hover
+              transition={{ duration: 0.3 }}
+            >
+              <Card className="bg-gradient-to-br from-gray-900 to-gray-800 border-gray-700 rounded-lg overflow-hidden shadow-lg h-full">
+                <CardContent className="p-6 flex flex-col justify-between h-full">
+                  <div>
+                    <Quote className="w-8 h-8 text-purple-400 mb-4" />
+                    <p className="text-gray-300 mb-4 text-base sm:text-lg">
+                      {testimonial.quote}
+                    </p>
+                  </div>
+                  <p className="text-right font-bold text-base sm:text-lg bg-gradient-to-r from-indigo-500 via-violet-600 to-pink-400 bg-clip-text text-transparent mt-auto">
+                    - {testimonial.author}
+                  </p>
+                </CardContent>
+              </Card>
+            </motion.div>
+          ))}
+        </motion.div>
+      </motion.div>
     </motion.section>
   );
 };

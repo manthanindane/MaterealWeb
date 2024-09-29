@@ -16,10 +16,10 @@ const HeroSection = () => {
     const createLight = () => {
       const newLight = {
         id: Date.now(),
-        x: Math.random() * 80 + 10, // Concentrate more towards the center
-        y: Math.random() * 80 + 10, // Concentrate more towards the center
-        size: Math.random() * 200 + 100, // Increased size for more glow
-        duration: Math.random() * 4000 + 3000, // Longer duration for smoother effect
+        x: Math.random() * 80 + 10,
+        y: Math.random() * 80 + 10,
+        size: Math.random() * 200 + 100,
+        duration: Math.random() * 4000 + 3000,
         delay: Math.random() * 1000,
       };
       setLights(prevLights => [...prevLights, newLight]);
@@ -28,44 +28,44 @@ const HeroSection = () => {
       }, newLight.duration + newLight.delay);
     };
 
-    const intervalId = setInterval(createLight, 800); // Slightly faster creation for more consistent glow
+    const intervalId = setInterval(createLight, 800);
     return () => clearInterval(intervalId);
   }, []);
 
   return (
     <motion.section
-      className="flex flex-col md:flex-row items-center justify-between py-20 h-full relative overflow-hidden"
+      className="flex flex-col lg:flex-row items-center justify-between py-10 sm:py-16 lg:py-20 min-h-screen relative overflow-hidden px-4 sm:px-6 lg:px-8"
       {...fadeIn}
     >
-      <div className="md:w-1/2 z-10">
-        <h1 className="text-7xl lg:text-8xl font-extrabold mb-6 animated-gradient-text leading-tight">
+      <div className="w-full lg:w-1/2 z-10 mb-10 lg:mb-0">
+        <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-extrabold mb-4 sm:mb-6 animated-gradient-text leading-tight">
           Create your own AI and chat
         </h1>
-        <p className="text-xl mb-8 text-gray-300">
-          Matereal lets you build characters you can talk to. <br/>Fun, simple,
+        <p className="text-lg sm:text-xl mb-6 sm:mb-8 text-gray-300">
+          Matereal lets you build characters you can talk to. <br className="hidden sm:inline"/>Fun, simple,
           and personal.
         </p>
         <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
           <Button
             size="lg"
             variant="gradient"
-            className="button-gradient text-white text-md px-8 py-3"
+            className="button-gradient text-white text-md px-6 sm:px-8 py-3 w-full sm:w-auto"
           >
-            <a href="https://drive.google.com/file/d/1uxmmgEJYbvgELU3eTLWUMwPs1GWa0ZvP/view?usp=sharing">
-           Download APK
-           </a>
+            <a href="https://drive.google.com/file/d/1uxmmgEJYbvgELU3eTLWUMwPs1GWa0ZvP/view?usp=sharing" className="w-full text-center">
+              Download APK
+            </a>
           </Button>
           <Image
             src="/assets/indusbadge.jpeg"
             alt="AI Icon"
             width={100}
             height={200}
-            className="rounded-lg object-cover object-center h-11"
+            className="rounded-lg object-cover object-center h-11 w-auto mx-auto sm:mx-0"
           />
         </div>
       </div>
-      <div className="md:w-1/2 mt-10 md:mt-0 relative z-10">
-        <div className="relative w-[400px] max-w-md mx-auto">
+      <div className="w-full lg:w-1/2 mt-10 lg:mt-0 relative z-10">
+        <div className="relative w-full max-w-sm sm:max-w-md mx-auto">
           <div className="absolute inset-0 blur-3xl bg-gradient-to-r from-blue-500 to-pink-500 opacity-30 animate-pulse"></div>
           <Image
             src="/assets/hero.png"
